@@ -9,7 +9,13 @@ const currency = new Intl.NumberFormat("es-PE", {
   currency: "PEN",
 });
 
-export function OrderConfirmation({ order }: { order: Order }) {
+export function OrderConfirmation({
+  order,
+  loggedIn,
+}: {
+  order: Order;
+  loggedIn: boolean;
+}) {
   return (
     <div className="mx-auto max-w-lg px-4 py-8">
       <Card>
@@ -22,9 +28,18 @@ export function OrderConfirmation({ order }: { order: Order }) {
             {currency.format(Number(order.total))}
           </p>
           <p className="text-sm text-muted-foreground">
-            Guardá este número: sin una cuenta (RF-19, todavía no disponible),
-            no vas a poder volver a consultarlo desde acá. Te contactamos a{" "}
-            {order.contactEmail} para coordinar pago y entrega.
+            {loggedIn ? (
+              <>
+                Lo vas a poder ver después en{" "}
+                <Link href="/cuenta/pedidos" className="text-primary underline">
+                  Mis pedidos
+                </Link>
+                .
+              </>
+            ) : (
+              "Guardá este número: sin iniciar sesión no vas a poder volver a consultarlo desde acá."
+            )}{" "}
+            Te contactamos a {order.contactEmail} para coordinar pago y entrega.
           </p>
           <Button render={<Link href="/productos" />} className="mt-2">
             Seguir comprando

@@ -39,7 +39,7 @@ export default function CheckoutPage() {
   }
 
   if (result?.order) {
-    return <OrderConfirmation order={result.order} />;
+    return <OrderConfirmation order={result.order} loggedIn={!!result.loggedIn} />;
   }
 
   if (items.length === 0) {

@@ -2,6 +2,7 @@
 
 import { ApiError, apiFetch } from "@/lib/api/client";
 import { endpoints } from "@/lib/api/endpoints";
+import { getSession } from "@/lib/auth/session";
 import type { Order } from "@/types/api";
 
 export interface CheckoutItemInput {
@@ -21,15 +22,21 @@ export interface CheckoutInput {
 
 export interface CheckoutResult {
   order?: Order;
+  /** Si estaba logueado, el pedido queda en su historial (/cuenta/pedidos). */
+  loggedIn?: boolean;
   error?: string;
 }
 
 /**
- * POST /orders (RF-17/18) — CLIENTE o PUBLICO (checkout invitado). El precio
- * y subtotal los calcula inventario-api a partir de `productVariantId`, no
- * se confía en nada que venga del carrito del cliente. Decrementa stock de
- * inmediato en la misma transacción (decisión documentada en
- * requerimientos.md sección 6), no hay "reserva" con expiración.
+ * POST /orders (RF-17/18) — CLIENTE o PUBLICO (checkout invitado). Si hay
+ * sesión de cliente, `apiFetch` adjunta el Bearer automáticamente (default
+ * `withAuth: true`) y el pedido queda asociado a esa cuenta en vez de crear
+ * un guest nuevo (ver `OrdersService.resolveCustomerId` en inventario-api).
+ * El precio y subtotal los calcula inventario-api a partir de
+ * `productVariantId`, no se confía en nada que venga del carrito del
+ * cliente. Decrementa stock de inmediato en la misma transacción (decisión
+ * documentada en requerimientos.md sección 6), no hay "reserva" con
+ * expiración.
  */
 export async function createOrderAction(input: CheckoutInput): Promise<CheckoutResult> {
   if (input.items.length === 0) {
@@ -50,7 +57,8 @@ export async function createOrderAction(input: CheckoutInput): Promise<CheckoutR
         notes: input.notes || undefined,
       },
     });
-    return { order };
+    const session = await getSession();
+    return { order, loggedIn: !!session };
   } catch (error) {
     if (error instanceof ApiError) {
       return {
