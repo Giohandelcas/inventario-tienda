@@ -12,15 +12,6 @@ const initialState: RegisterState = {};
 export function RegistroForm() {
   const [state, action, pending] = useActionState(registerAction, initialState);
 
-  if (state.success) {
-    return (
-      <p className="text-sm text-muted-foreground">
-        Cuenta creada. El login de clientes todavía no está implementado
-        (RF-19) — por ahora podés seguir comprando como invitado.
-      </p>
-    );
-  }
-
   return (
     <form action={action} className="flex flex-col gap-4">
       <FieldGroup>

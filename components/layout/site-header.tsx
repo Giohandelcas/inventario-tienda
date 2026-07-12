@@ -9,7 +9,7 @@ import { useCart } from "@/lib/cart/cart-context";
 import { CartSheet } from "@/components/cart/cart-sheet";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 
-export function SiteHeader() {
+export function SiteHeader({ customerName }: { customerName: string | null }) {
   const { totalItems } = useCart();
 
   return (
@@ -23,7 +23,7 @@ export function SiteHeader() {
             Catálogo
           </Link>
           <Link href="/cuenta" className="hover:text-primary">
-            Mi cuenta
+            {customerName ? `Hola, ${customerName.split(" ")[0]}` : "Ingresar"}
           </Link>
         </nav>
         <Sheet>
