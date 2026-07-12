@@ -1,13 +1,9 @@
 /**
- * Rutas de `inventario-api` que el storefront puede llamar hoy como actor
- * PUBLICO o CLIENTE invitado (ver `inventario-api/docs/API-CONTRACTS.md`).
- *
- * No incluye `orders.list`/`orders.detail`: GET /orders y GET /orders/:id
- * exigen actor ADMIN/VENDEDOR/BODEGA/CLIENTE — un invitado que acaba de
- * pagar (POST /orders, sí PUBLICO) no puede después consultar ese pedido por
- * GET sin loguearse (RF-19, todavía no implementado). Ver
- * app/(shop)/checkout/actions.ts para cómo se maneja la confirmación sin esa
- * ruta.
+ * Rutas de `inventario-api` que el storefront llama (ver
+ * `inventario-api/docs/API-CONTRACTS.md`). `orders.list`/`orders.detail`
+ * exigen sesión de cliente (RF-19) — un invitado no logueado no puede
+ * consultarlas; ver `app/checkout/order-confirmation.tsx` para cómo se
+ * muestra la confirmación de un checkout de invitado sin depender de ellas.
  */
 export const endpoints = {
   products: {
@@ -20,8 +16,11 @@ export const endpoints = {
   },
   customers: {
     register: () => `/customers/register`,
+    login: () => `/customers/login`,
   },
   orders: {
     create: () => `/orders`,
+    list: () => `/orders`,
+    detail: (id: string) => `/orders/${id}`,
   },
 } as const;
