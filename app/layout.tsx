@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { CartProvider } from "@/lib/cart/cart-context";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { getSession } from "@/lib/auth/session";
 import "./globals.css";
 
 const nunitoSans = Nunito_Sans({
@@ -27,11 +28,13 @@ export const metadata: Metadata = {
   description: "Catálogo y pedidos de la tienda en línea.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getSession();
+
   return (
     <html
       lang="es"
@@ -40,7 +43,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <TooltipProvider>
           <CartProvider>
-            <SiteHeader />
+            <SiteHeader customerName={session?.name ?? null} />
             <main className="flex-1">{children}</main>
             <SiteFooter />
           </CartProvider>

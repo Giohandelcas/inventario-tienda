@@ -79,9 +79,9 @@ export interface Customer {
 
 // ─── Pedidos (RF-10, RF-17, RF-18) ─────────────────────────────────────────
 
+/** GET /orders/:id no incluye la variante/producto anidados — solo el id. */
 export interface OrderItem {
   productVariantId: string;
-  productVariant?: ProductVariant & { product?: Pick<Product, "id" | "name" | "sku"> };
   quantity: number;
   unitPrice: string;
   subtotal: string;
