@@ -19,7 +19,9 @@ export default async function AccountPage() {
             <CardDescription>{session.email}</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
-            <Button render={<Link href="/cuenta/pedidos" />}>Mis pedidos</Button>
+            <Button render={<Link href="/cuenta/pedidos" />} nativeButton={false}>
+              Mis pedidos
+            </Button>
             <form action={logoutAction}>
               <Button variant="outline" type="submit" className="w-full">
                 Cerrar sesión
@@ -42,8 +44,14 @@ export default async function AccountPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
-          <Button render={<Link href="/cuenta/login" />}>Iniciar sesión</Button>
-          <Button variant="outline" render={<Link href="/cuenta/registro" />}>
+          <Button render={<Link href="/cuenta/login" />} nativeButton={false}>
+            Iniciar sesión
+          </Button>
+          <Button
+            variant="outline"
+            render={<Link href="/cuenta/registro" />}
+            nativeButton={false}
+          >
             Crear cuenta
           </Button>
         </CardContent>

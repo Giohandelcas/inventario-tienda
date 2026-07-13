@@ -41,7 +41,11 @@ export function OrderConfirmation({
             )}{" "}
             Te contactamos a {order.contactEmail} para coordinar pago y entrega.
           </p>
-          <Button render={<Link href="/productos" />} className="mt-2">
+          <Button
+            render={<Link href="/productos" />}
+            nativeButton={false}
+            className="mt-2"
+          >
             Seguir comprando
           </Button>
         </CardContent>
