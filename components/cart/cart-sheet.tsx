@@ -92,6 +92,7 @@ export function CartSheet() {
         </div>
         <SheetClose
           render={<Link href="/checkout" />}
+          nativeButton={false}
           className={cn(
             buttonVariants(),
             "w-full bg-cta text-cta-foreground hover:bg-cta/90",

@@ -24,6 +24,7 @@ export default function HomePage() {
         </p>
         <Button
           render={<Link href="/productos" />}
+          nativeButton={false}
           size="lg"
           className="bg-cta text-cta-foreground hover:bg-cta/90"
         >
